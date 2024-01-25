@@ -8,14 +8,14 @@ let router = express.Router()
 
 router.get('/', function (req, res, next) {
   const id = req.params.id
-  const query = `select * from bicycles where id=${id}`
+  const query = `select * from recipe where id=${id}`
   connection.query(query, (err, data) => {
     if (err) {
       next(err)
 
     } else {
       if ((data.length = 0)) {
-        let error = new Error(`bicycle with id ${id} not found`)
+        let error = new Error(`recipe with id ${id} not found`)
         err.status = 404
         res.send(err)
         next(err)
