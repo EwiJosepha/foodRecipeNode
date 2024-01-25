@@ -17,5 +17,7 @@ connection.connect((err)=>{
   
 })
 
+// `select  mealId, mealName, strArea, mealstrYoutube, mealInstructions, mealMeasurements, mealcategory.categoryName  from recipe join mealcategory on recipe.mealCatId = mealcategory.categoryId` 
+
 
 module.exports = connection
