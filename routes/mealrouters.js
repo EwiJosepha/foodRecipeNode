@@ -8,12 +8,12 @@ let router = express.Router()
 
 router.get('/', function (req, res, next) {
   const query = 
-  `select  mealId, mealName, strArea,mealstrYoutube, mealInstructions, mealMeasurements, mealcategory.categoryName, mealIngredients.ingredients  from recipe  right join mealcategory on
-  recipe.mealCatId = mealcategory.categoryId right join mealingredients on recipe.mealId;
+  `select  mealId, mealName, strArea,mealstrYoutube, mealInstructions, mealMeasurements, mealcategory.categoryName, mealIngredients.ingredients  from recipe  join mealcategory on
+  recipe.mealCatId = mealcategory.categoryId join mealingredients;
   `
   console.log(res.statusCode)
   connection.query(query, (err, data) => {
-    if (err) {
+    if (err) { 
       console.error(err)
       if (err.message === "not found") next()
       else next()
@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/:id', function (req, res, next) {
   const id = req.params.id
-  const query2 = `select * from recipe where mealId = ${id}`
+  const query2 = `select * from recipe where mealId = ${id};`
   connection.query(query2, (err, data) => {
     if (err) {
       next(err)
@@ -53,6 +53,23 @@ router.post('/', function (req, res, next) {
     if (err) next(err)
     else res.status(201).send(data)
   })
+})
+
+router.delete("/:id", function (req, res, next) {
+  const id = req.params.id
+  const deletedquery = `delete from recipe where id = ${id}`
+  connection.query(deletedquery, (err, data)=>{
+    if (err) {
+      console.log(err);
+      if (err.message === "not found") next()
+      else {
+        next()
+      }
+    }else{
+      res.send(data)
+    }
+  })
+
 })
 
 
