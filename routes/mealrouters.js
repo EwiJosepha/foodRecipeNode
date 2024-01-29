@@ -47,28 +47,102 @@ router.get('/:id', function (req, res, next) {
   })
 });
 
+
 router.post('/', function (req, res, next) {
-  // const { categoryId, category } = req.body
-  const categoryquerry = `insert into mealcategory(categoryId, category)  values ("2", "${Dessert}")`
+  const {
+    mealId,
+    mealName,
+    mealArea,
+    mealUrl,
+    mealYoutube,
+    categoryId,
+    instructionId,
+    stepCount,
+    instruction,
+    step
+  } = req.body;
 
-  const mealquerry = `insert into meals(mealId, mealName, mealArea, mealUrl,mealYoutube, categoryId)  values ("2", "${sandwish}", "${USA}", "${"https://images.unsplash.com/photo-1555554317-766200eb80d6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FuZHdpc2h8ZW58MHx8MHx8fDA%3D"}", "${null}, "${2}");`
+  const categoryQuery = `INSERT INTO mealcategory (categoryId, category) VALUES (?, ?)`;
+  const mealQuery = `INSERT INTO meals (mealId, mealName, mealArea, mealUrl, mealYoutube, categoryId) VALUES (?, ?, ?, ?, ?, ?)`;
+  const instructionsQuery = `
+    INSERT INTO mealInstructions (instructionId, mealId, stepCount, instruction, step)
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
-  connection.query(mealquerry, (err, data) => {
-    if (err) next(err)
-    else res.status(201).send(data)
-  })
+  connection.beginTransaction(function (err) {
+    if (err) { 
+      return next(err);
+    }
 
-  const instructionsquerry = `insert into mealInstructions(instructionId, mealId,stepCount, instruction, step)  values ("2", "${2}", "${2}", "${'[{"instruction": "follow the steps carefully"}]'}", "${'[{"step1": "SLICE tomatoes and other ingredients"},{"step2": "bake your flour"}, {"step3": "spread spices into the bread"}]'}" )
-  ;`
-  connection.query(instructionsquerry, (err, data) => {
-    if (err) next(err)
-    else res.status(201).send(data)
+    // Insert into mealcategory table
+    connection.query(categoryQuery, [categoryId, mealName], function (error, results, fields) {
+      if (error) {
+        return connection.rollback(function () {
+          next(error);
+        });
+      }
+
+      const mealIdFromCategoryInsert = results.insertId;
+
+      // Insert into meals table
+      connection.query(mealQuery, [mealId, mealName, mealArea, mealUrl, mealYoutube, categoryId], function (error, results, fields) {
+        if (error) {
+          return connection.rollback(function () {
+            next(error);
+          });
+        }
+
+        const mealIdFromMealsInsert = results.insertId;
+
+        // Insert into mealInstructions table
+        connection.query(instructionsQuery, [instructionId, mealIdFromMealsInsert, stepCount, instruction, step], function (error, results, fields) {
+          if (error) {
+            return connection.rollback(function () {
+              next(error);
+            });
+          }
+
+          connection.commit(function (err) {
+            if (err) {
+              return connection.rollback(function () {
+                next(err);
+              });
+            }
+            console.log('Transaction Complete.');
+            res.status(201).send('Transaction Complete.');
+          });
+        });
+      });
+    });
+  });
+});
+
+
+router.post('/:id/update', function (req, res, next) {
+  const id = req.params.id
+  const { spaghetti } = req.body;
+  const updatedata = `UPDATE meals SET mealName ="${spaghetti}" WHERE mealId = ${id};`
+  console.log("querry executesd", updatedata);
+  console.log(req.body)
+
+  connection.query(updatedata, (err,data)=>{
+    if (err) {
+      console.log(err);
+      if (err.message === "not found") next()
+      else {
+        next()
+      }
+    }else{
+      res.send({data})
+    }
   })
 })
 
+
+
 router.delete("/:id", function (req, res, next) {
   const id = req.params.id
-  const deletedquery = `delete from recipe where id = ${id}`
+  const deletedquery = `delete from meals where id = ${id}`
   connection.query(deletedquery, (err, data) => {
     if (err) {
       console.log(err);
