@@ -45,11 +45,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// const DB_PORT = process.env.DB_NAME
-
-// app.listen(DB_PORT, ()=>{
-//   console.log("app is running on port " + DB_PORT);
-// })
-
-
 module.exports = app;

@@ -49,53 +49,70 @@ router.get('/:id', function (req, res, next) {
 
 
 router.post('/', function (req, res, next) {
+  // const createpostquerry = `insert into meals (  mealName,
+  //   mealArea,
+  //   mealUrl,
+  //   mealYoutube,
+  //   categoryId
+  //   ) values ("shawama", "Spain","https://example.com/spaghetti.jpg","https://www.youtube.com/watch?v=spaghetti-video",2);
+  //   insert into mealinstructions (
+  //     mealinstructions.instruction,
+  //     mealinstructions.step
+  //   ) values (
+  //     '[{"instruction": "follow steps for shawarma carefully"}]'
+  //     '[{"instruction": "follow steps for shawarma carefully"}, {"step": "add tomatoes and}]'
+  //   )`
   const {
-    mealId,
     mealName,
     mealArea,
     mealUrl,
     mealYoutube,
     categoryId,
+    category,
     instructionId,
     stepCount,
     instruction,
     step
   } = req.body;
 
-  const categoryQuery = `INSERT INTO mealcategory (categoryId, category) VALUES (?, ?)`;
-  const mealQuery = `INSERT INTO meals (mealId, mealName, mealArea, mealUrl, mealYoutube, categoryId) VALUES (?, ?, ?, ?, ?, ?)`;
-  const instructionsQuery = `
-    INSERT INTO mealInstructions (instructionId, mealId, stepCount, instruction, step)
-    VALUES (?, ?, ?, ?, ?)
+  console.log("body", req.body);
+
+  const categoryQuery = `INSERT INTO mealctegory (categoryId, category) VALUES (3,  "beef")`;
+  const mealQuery = `INSERT INTO meals ( mealName, mealArea, mealUrl, mealYoutube, categoryId) values ("shawama", "Spain","https://example.com/spaghetti.jpg","https://www.youtube.com/watch?v=spaghetti-video",3)`;
+  const instructionsQuery = `INSERT INTO mealInstructions (instructionId,instruction,step)
+  values (3,
+        '[{"instruction": "follow steps for shawarma carefully"}]',
+         '[{"instruction": "follow steps for shawarma carefully"}, {"step": "add tomatoes and"}]'
+       )
   `;
 
   connection.beginTransaction(function (err) {
-    if (err) { 
+    if (err) {
       return next(err);
     }
 
     // Insert into mealcategory table
-    connection.query(categoryQuery, [categoryId, mealName], function (error, results, fields) {
+    connection.query(categoryQuery, [categoryId, category], function (error, results) {
       if (error) {
         return connection.rollback(function () {
           next(error);
         });
       }
 
-      const mealIdFromCategoryInsert = results.insertId;
+      // const mealIdFromCategoryInsert = results.insertId;
 
       // Insert into meals table
-      connection.query(mealQuery, [mealId, mealName, mealArea, mealUrl, mealYoutube, categoryId], function (error, results, fields) {
+      connection.query(mealQuery, [mealName, mealArea, mealUrl, mealYoutube, categoryId], function (error, results) {
         if (error) {
           return connection.rollback(function () {
             next(error);
           });
         }
-
         const mealIdFromMealsInsert = results.insertId;
 
         // Insert into mealInstructions table
-        connection.query(instructionsQuery, [instructionId, mealIdFromMealsInsert, stepCount, instruction, step], function (error, results, fields) {
+        connection.query(instructionsQuery, [instructionId,instruction, step], function (error, results) {
+          console.log("instructions querry ", results);
           if (error) {
             return connection.rollback(function () {
               next(error);
@@ -109,7 +126,7 @@ router.post('/', function (req, res, next) {
               });
             }
             console.log('Transaction Complete.');
-            res.status(201).send('Transaction Complete.');
+            res.status(201).send(results);
           });
         });
       });
@@ -120,29 +137,47 @@ router.post('/', function (req, res, next) {
 
 router.post('/:id/update', function (req, res, next) {
   const id = req.params.id
-  const { spaghetti } = req.body;
-  const updatedata = `UPDATE meals SET mealName ="${spaghetti}" WHERE mealId = ${id};`
-  console.log("querry executesd", updatedata);
-  console.log(req.body)
+  const updatedata = `UPDATE meals join mealctegory on
+   meals.categoryId = mealctegory.categoryId 
+   join mealinstructions on meals.mealId= mealinstructions.mealId SET meals.mealName="spaghetti", meals.mealArea="Italian", meals.mealUrl="https://example.com/spaghetti.jpg", meals.mealYoutube="https://www.youtube.com/watch?v=spaghetti-video", meals.categoryId= 1, mealctegory.category = "super", mealinstructions.instruction = '[{"instruction":"follow steps for spaghetti carefully"}]'  WHERE meals.mealId = ${id};`
 
-  connection.query(updatedata, (err,data)=>{
+  console.log("querry executed", updatedata);
+  connection.query(updatedata, (err, data) => {
     if (err) {
       console.log(err);
       if (err.message === "not found") next()
       else {
         next()
       }
-    }else{
-      res.send({data})
+    } else {
+      res.send({ data })
     }
   })
 })
 
-
+router.put("/", function (req, res, next) {
+  // const id = req.params.id
+  const querydata = `alter table meals add column (comments varchar(255))`
+  console.log('querry executed', querydata);
+  connection.query(querydata, (err, data) => {
+    if (err) {
+      console.log(err);
+      if (err.message === "not found") next()
+      else {
+        next()
+      }
+    } else {
+      res.send(data)
+    }
+  })
+})
 
 router.delete("/:id", function (req, res, next) {
   const id = req.params.id
-  const deletedquery = `delete from meals where id = ${id}`
+  const deletedquery = `delete meals, mealctegory,mealInstructions    
+   from meals join mealctegory on
+  meals.categoryId = mealctegory.categoryId 
+  join mealinstructions on meals.mealId= mealinstructions.mealId  WHERE meals.mealId = ${id};`
   connection.query(deletedquery, (err, data) => {
     if (err) {
       console.log(err);
@@ -154,7 +189,6 @@ router.delete("/:id", function (req, res, next) {
       res.send(data)
     }
   })
-
 })
 
 
