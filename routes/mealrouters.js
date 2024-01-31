@@ -174,10 +174,7 @@ router.put("/", function (req, res, next) {
 
 router.delete("/:id", function (req, res, next) {
   const id = req.params.id
-  const deletedquery = `delete meals, mealctegory,mealInstructions    
-   from meals join mealctegory on
-  meals.categoryId = mealctegory.categoryId 
-  join mealinstructions on meals.mealId= mealinstructions.mealId  WHERE meals.mealId = ${id};`
+  const deletedquery = `delete from meals WHERE meals.mealId = ${id};`
   connection.query(deletedquery, (err, data) => {
     if (err) {
       console.log(err);
