@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 
 function Meals() {
   const [step, setStep] = useState([]);
+  const [mealid, setMealId] = useState(0);
   const navigate = useNavigate();
   const { data, isLoading, error } = useQuery({
     queryKey: ["mealbackend"],
@@ -20,6 +21,7 @@ function Meals() {
         // Assuming the response.data is the actual data you want
 
         setStep(response.data[0].step);
+        setMealId(response.data[0].mealId)
 
         const data = response.data;
         return data;
@@ -41,39 +43,29 @@ function Meals() {
 
   return (
     <>
-      {/* <Navbar />
+      <Navbar />
       <Landingimage />
-      <Popularcat />
+      {/* <Popularcat />
       <Choosefav/> */}
 
       <div className="latest" id="latestt">
         <h1 id="recipe">All Meals</h1>
         <div className="latestrecipe" id="latestrecipee">
-          {data.slice(1,8).map((meals) => {
+          {data.slice(1, 8).map((meals, mealId) => {
             return (
               <>
                 <div
                   onClick={() => {
-                    navigate("/details");
-                    JSON.stringify(
-                      localStorage.setItem("mealidd", meals.mealId)
-                    );
-                    console.log(meals.idMeal);
+                    navigate(`/details/${meals.mealId}`);
                   }}
                   className="bestmeal"
                   id="bestmeall"
                 >
-                  <img src={meals.mealUrl} />
+                  <img  key={meals.mealId} src={meals.mealUrl} />
 
                   <div className="area">
                     <h5 id="popcatt">{meals.mealName}</h5>
                     <h5 id="area">{meals.mealArea}</h5>
-                    {/* <h2>Steps:</h2>
-                    <ul>
-                      {step.map((step, index) => (
-                        <li key={index}>{step.step}</li>
-                      ))}
-                    </ul> */}
                   </div>
                 </div>
               </>
@@ -81,9 +73,9 @@ function Meals() {
           })}
         </div>
       </div>
-      {/* 
+
       <Form />
-      <Footer /> */}
+      <Footer />
     </>
   );
 }

@@ -3,65 +3,39 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Similar from "../Similarities/Similar";
 import "./Instruction.css"
+import { useParams } from "react-router-dom";
 
 function Instruction() {
   let currentmeal;
-  const getid = JSON.parse(localStorage.getItem("mealidd"));
-  const [ingredients, setIngredients] = useState([]);
+  const {id} = useParams()
+  console.log(id);
+  const [importantNote, setImportanNote] = useState([]);
+  const [instructions, setInstructions] = useState([]);
   const [measurements, setMeasurements] = useState([])
 
   const { data } = useQuery({
-    queryKey: ["instuandingrs"],
+    queryKey: ["instructtionsbkn"],
     queryFn: async () => {
       const res = await axios.get(
-        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${getid}`
+        `http://localhost:3000/mealrouters/${id}`
       );
-
-      return res.data.meals;
+      setInstructions(res.data.step)
+      setImportanNote(res.data.instruction)
+      return res.data
     },
   });
 
-  const createArrayFromObjectKeys = (obj, target_key) => {
-    const target_legnth = target_key.length;
-    const array_items = [];
-
-    for (let key of Object.keys(obj)) {
-      if (
-        key.slice(0, target_legnth) === target_key &&
-        obj[key].trim() !== ""
-      ) {
-        array_items.push(obj[key]);
-      }
-    }
-
-    return array_items;
-  };
-
-  useEffect(() => {
-    if (data) {
-      const res = data[0];
-      const arrStrIngds = createArrayFromObjectKeys(res, "strIngredient");
-      const measure = createArrayFromObjectKeys(res,"strMeasure")
-      setIngredients(arrStrIngds);
-      setMeasurements(measure)
-    }
-
-    console.log({ data });
-  }, [data]);
-
-
-  console.log(measurements);
-
+console.log(data);
   return (
     <>
       <div className="containersflex">
         <div className="twowrapper">
-        <h4 id="ingredients">Ingredients</h4>
+        <h4 id="ingredients">Important Note</h4>
           <div className="ul2">
             <div className="container">
               <ul type="circle" id="display-ingredients">
-                {ingredients?.map((ingr, index) => (
-                  <li key={index}>{ingr}</li>
+                {importantNote?.map((importantnote, index) => (
+                  <li key={index}>{importantnote.instruction}</li>
                 ))}
               </ul>
             </div>
@@ -69,9 +43,11 @@ function Instruction() {
 
           <h4 id="instructions">Instructions</h4>
           <div className="instruc" id="instrucc">
-           {data?.map((instrutions)=>{
-              return <p>{instrutions.strInstructions}</p>
-            })}
+                    <ul type="circle" id="display-ingredients">
+                      {instructions.map((step, index) => (
+                        <li key={index}>{step.step}</li>
+                      ))}
+                    </ul> 
           </div>
         </div>
 
@@ -80,13 +56,13 @@ function Instruction() {
         <div class="card">
         <div class="container">
       </div>
-          {measurements?.map((measurements)=>{
+         
             return(
               <>
-              <p id="measur">{measurements}</p>
+              <p id="measur"></p>
               </>
             ) 
-          })}
+      
           </div>
           <Similar />
           <div className="formm"></div>
