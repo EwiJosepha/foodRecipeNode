@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Similar from "../Similarities/Similar";
+import CreateMeal from "../CreateMeal/CreateMeal";
 import "./Instruction.css"
 import { useParams } from "react-router-dom";
 
@@ -66,16 +67,10 @@ console.log(data);
           </div>
           <Similar />
           <div className="formm"></div>
-
-          <div className="alreadymade">
-            <h3 id="txtcenter">Already made this ?</h3>
-            <div className="btnmade">
-              <button id="already">Share Your Feedback</button>
-              <div id="orangg"></div>
-            </div>
-          </div>
         </div>
       </div>
+      <CreateMeal />
+
     </>
   );
 }
