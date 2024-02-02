@@ -1,4 +1,5 @@
 import { useState } from "react"
+import MyForm from "../Inputs/Dropdowns"
 import "./Create.css"
 
 function CreateMeal() {
@@ -28,9 +29,13 @@ function CreateMeal() {
           <img
             src="https://media.istockphoto.com/id/1384052325/fr/photo/symbole-de-for%C3%AAt-de-coche.webp?b=1&s=170667a&w=0&k=20&c=lMim9mylyQ7Zjop8nMyHN5ppj-9s50HSF-KnrpFmXMk=" alt=""
           />
+
+          
           <h2>thank you</h2>
           <p>your details have been registered</p>
           <button type="button" id="btn" onClick={closeModal}>ok</button>
+          <MyForm />
+
         </div>}
        
       

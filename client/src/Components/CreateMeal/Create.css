@@ -7,15 +7,15 @@
 
 .alreadymade {
   width: 100%;
-  height: 100vh;
-  background-color: #c5071d;
+  height: 800px;
+  background-color: #ffa500;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 #txtcenter {
-  color: #c5071d;
+  color: #ffa500;
   margin-top: 10px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 23px;
@@ -34,7 +34,8 @@
 }
 
 .popup {
-  width: 400px;
+  height: 600px;
+  width: 800px;
   background-color: #fff;
   border-radius: 6px;
   /* position: absolute; */
@@ -79,8 +80,14 @@
   font-size: 18px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   border-radius: 7px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba((0, 0, 0, 0.2), green, blue, alpha);
+}
+
+#btn {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #ffa500;
 }
