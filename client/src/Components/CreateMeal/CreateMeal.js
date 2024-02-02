@@ -33,7 +33,7 @@ function CreateMeal() {
           
           <h2>thank you</h2>
           <p>your details have been registered</p>
-          <button type="button" id="btn" onClick={closeModal}>ok</button>
+          <button type="button" id="btn" onClick={closeModal}>close</button>
           <MyForm />
 
         </div>}
