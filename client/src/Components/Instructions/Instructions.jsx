@@ -5,6 +5,7 @@ import Similar from "../Similarities/Similar";
 import CreateMeal from "../CreateMeal/CreateMeal";
 import "./Instruction.css"
 import { useParams } from "react-router-dom";
+import UpdateMealModal from "../UpdateMeal/UpdateMeal";
 
 function Instruction() {
   let currentmeal;
@@ -58,16 +59,20 @@ console.log(data);
         <div class="container">
       </div>
          
-            return(
-              <>
-              <p id="measur"></p>
-              </>
-            ) 
       
           </div>
+
           <Similar />
-          <div className="formm"></div>
+      
+          <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <UpdateMealModal />
+
         </div>
+       
       </div>
       <CreateMeal />
 

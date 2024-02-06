@@ -3,6 +3,8 @@ var createError = require('http-errors');
 var express = require('express');
 const cors = require("cors")
 var path = require('path');
+const bodyParser = require('body-parser');
+
 // var logger = require('morgan');
 
 // var cookieParser = require('cookie-parser');
@@ -12,6 +14,8 @@ var path = require('path');
 const mealRouter = require('./routes/mealrouters');
 
 var app = express();
+app.use(bodyParser.json());
+
 
 // view engine setup
 

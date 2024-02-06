@@ -49,19 +49,6 @@ router.get('/:id', function (req, res, next) {
 
 
 router.post('/', function (req, res, next) {
-  // const createpostquerry = `insert into meals (  mealName,
-  //   mealArea,
-  //   mealUrl,
-  //   mealYoutube,
-  //   categoryId
-  //   ) values ("shawama", "Spain","https://example.com/spaghetti.jpg","https://www.youtube.com/watch?v=spaghetti-video",2);
-  //   insert into mealinstructions (
-  //     mealinstructions.instruction,
-  //     mealinstructions.step
-  //   ) values (
-  //     '[{"instruction": "follow steps for shawarma carefully"}]'
-  //     '[{"instruction": "follow steps for shawarma carefully"}, {"step": "add tomatoes and}]'
-  //   )`
   const {
     mealName,
     mealArea,
@@ -77,13 +64,10 @@ router.post('/', function (req, res, next) {
 
   console.log("body", req.body);
 
-  const categoryQuery = `INSERT INTO mealctegory (categoryId, category) VALUES (3,  "beef")`;
-  const mealQuery = `INSERT INTO meals ( mealName, mealArea, mealUrl, mealYoutube, categoryId) values ("shawama", "Spain","https://example.com/spaghetti.jpg","https://www.youtube.com/watch?v=spaghetti-video",3)`;
+  const categoryQuery = `INSERT INTO mealctegory (categoryId, category) VALUES (?, ?)`;
+  const mealQuery = `INSERT INTO meals ( mealName, mealArea, mealUrl, mealYoutube, categoryId) values (?, ?, ?, ?, ?,?)`;
   const instructionsQuery = `INSERT INTO mealInstructions (instructionId,instruction,step)
-  values (3,
-        '[{"instruction": "follow steps for shawarma carefully"}]',
-         '[{"instruction": "follow steps for shawarma carefully"}, {"step": "add tomatoes and"}]'
-       )
+  values (?, ?)
   `;
 
   connection.beginTransaction(function (err) {
@@ -111,7 +95,7 @@ router.post('/', function (req, res, next) {
         const mealIdFromMealsInsert = results.insertId;
 
         // Insert into mealInstructions table
-        connection.query(instructionsQuery, [instructionId,instruction, step], function (error, results) {
+        connection.query(instructionsQuery, [instructionId,JSON.stringify(instruction), JSON.stringify(step)], function (error, results) {
           console.log("instructions querry ", results);
           if (error) {
             return connection.rollback(function () {

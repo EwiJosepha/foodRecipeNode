@@ -31,9 +31,9 @@ function CreateMeal() {
           />
 
           
-          <h2>thank you</h2>
-          <p>your details have been registered</p>
-          <button type="button" id="btn" onClick={closeModal}>close</button>
+          <h2>Thank you</h2>
+          <p>Your details have been registered</p>
+          <button type="button" id="btn" onClick={closeModal}>close Modal</button>
           <MyForm />
 
         </div>}

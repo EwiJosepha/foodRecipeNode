@@ -47,6 +47,7 @@ function Similar () {
   </div>
   </div>
   } )}
+
   </div>
     </>
   )
