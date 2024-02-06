@@ -3,87 +3,94 @@ import React, { useEffect, useState } from 'react';
 import Meals from '../Meals/Meals';
 
 const UpdateMealModal = () => {
-const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [formData, setFormData] = useState({
-   mealName: '',
+    mealName: '',
     mealArea: '',
     mealUrl: '',
     instruction: '',
     step: '',
+    step: '',
   });
 
-
   useEffect(() => {
-    // Retrieve values from local storage and set initial form data
-    const storedFormData = JSON.parse(localStorage.getItem('update')) || {};
-    setFormData(storedFormData);
+    const updatedmeal = JSON.parse(localStorage.getItem("update"))
+    // Set form data with values from the provided meal object
+    setFormData({
+      mealName: updatedmeal.mealName || '',
+      mealArea: updatedmeal.mealArea || '',
+      mealUrl: updatedmeal.mealUrl || '',
+      instruction: JSON.stringify(updatedmeal.instruction) || '', // Add other fields as needed
+      step: updatedmeal.step || '',
+      step: updatedmeal.step || '',
+
+    });
   }, []);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  console.log(formData.instruction);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Save updated form data to local storage
-    localStorage.setItem('formData', JSON.stringify(formData));
-    // Close the modal or perform any additional actions
-    closeModal();
+    // Add your update logic here
+    console.log('Form submitted:', formData);
   };
 
   return (
-    <div>
-      <button onClick={openModal}>Open Modal</button>
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <span className="close-button" onClick={closeModal}>
-              &times;
-            </span>
-            <form onSubmit={handleSubmit}>
-              <label>
-                Input 1:
-                <input type="text" name="input1" value={formData.input1} onChange={handleChange} />
-              </label>
+    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: 'auto' }}>
+      <label htmlFor=" mealName"> mealName:</label>
+      <input
+        type="text"
+        id="mealName"
+        name="mealName"
+        value={formData.mealName}
+        onChange={handleChange}
+        required
+      />
+      <label htmlFor="  mealArea"> mealArea:</label>
+      <input
+        type="text"
+        id="  mealArea"
+        name="mealArea"
+        value={formData.mealArea}
+        onChange={handleChange}
+        required
+      />
+      <label htmlFor=" mealUrl"> mealUrl:</label>
+      <input
+        type="text"
+        id=" mealUrl"
+        name=" mealName"
+        value={formData.mealUrl}
+        onChange={handleChange}
+        required
+      />
 
-              <label>
-                Input 2:
-                <input type="text" name="input2" value={formData.input2} onChange={handleChange} />
-              </label>
 
-              <label>
-                Input 3:
-                <input type="text" name="input3" value={formData.input3} onChange={handleChange} />
-              </label>
+      <label htmlFor=" instruction"> instruction:</label>
+      <textarea
+        id=" instruction"
+        name=" instruction"
+        value={JSON.stringify(formData.instruction, null, 2)}
+        onChange={handleChange}
+        required
+      ></textarea>
 
-              <label>
-                Textarea 1:
-                <textarea name="textarea1" value={formData.textarea1} onChange={handleChange} />
-              </label>
+      <label htmlFor="step">step:</label>
+      <textarea
+        id="step"
+        name="step"
+        value={formData.step}
+        onChange={handleChange}
+        required
+      ></textarea>
 
-              <label>
-                Textarea 2:
-                <textarea name="textarea2" value={formData.textarea2} onChange={handleChange} />
-              </label>
-
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
+      <button type="submit">Update</button>
+    </form>
   );
 };
 
