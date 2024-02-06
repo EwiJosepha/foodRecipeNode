@@ -18,6 +18,7 @@ function Meals() {
     queryFn: async () => {
       try {
         const response = await axios.get("http://localhost:3000/mealrouters");
+
         // Assuming the response.data is the actual data you want
 
         setStep(response.data[0].step);
@@ -51,17 +52,18 @@ function Meals() {
       <div className="latest" id="latestt">
         <h1 id="recipe">All Meals</h1>
         <div className="latestrecipe" id="latestrecipee">
-          {data.slice(1, 8).map((meals, mealId) => {
+          {data.map((meals, mealId) => {
             return (
               <>
                 <div
                   onClick={() => {
-                    navigate(`/details/${meals.mealId}`);
+                    navigate(`/details/${meals.mealId}`)
+                    localStorage.setItem("update", JSON.stringify(meals))
                   }}
                   className="bestmeal"
                   id="bestmeall"
                 >
-                  <img  key={meals.mealId} src={meals.mealUrl} />
+                  <img  key={meals.mealId} src={meals.mealUrl}  alt=""/>
 
                   <div className="area">
                     <h5 id="popcatt">{meals.mealName}</h5>

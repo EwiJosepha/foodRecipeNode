@@ -9,6 +9,7 @@ export const Appcontextt = createContext();
 
 function App() {
   const [favor, setFavor]= useState('favorites')
+  
   const client = new QueryClient();
   return (
     <>

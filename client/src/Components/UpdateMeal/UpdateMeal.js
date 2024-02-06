@@ -1,26 +1,33 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Meals from '../Meals/Meals';
 
 const UpdateMealModal = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    dropdown1: '',
-    dropdown2: '',
-    dropdown3: '',
-    input1: '',
-    input2: '',
-    input3: '',
+   mealName: '',
+    mealArea: '',
+    mealUrl: '',
+    instruction: '',
+    step: '',
   });
 
-  const handleOpenModal = () => {
+
+  useEffect(() => {
+    // Retrieve values from local storage and set initial form data
+    const storedFormData = JSON.parse(localStorage.getItem('update')) || {};
+    setFormData(storedFormData);
+  }, []);
+
+  const openModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -28,68 +35,54 @@ const UpdateMealModal = () => {
     }));
   };
 
-  const handleUpdateMeal = () => {
-    // Implement your update logic here
-    console.log('Updating meal with data:', formData);
-
-    // Close the modal after updating
-    handleCloseModal();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Save updated form data to local storage
+    localStorage.setItem('formData', JSON.stringify(formData));
+    // Close the modal or perform any additional actions
+    closeModal();
   };
 
   return (
     <div>
-      {isModalOpen ?
-      
-
-     
-        <div className="modal">
+      <button onClick={openModal}>Open Modal</button>
+      {isModalOpen && (
+        <div className="modal-overlay">
           <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}></span>
-
-            {/* Your form with three dropdowns and three inputs */}
-            <form>
-              <label>
-                Dropdown 1:
-                <select name="dropdown1" value={formData.dropdown1} onChange={handleInputChange}>
-                  {/* Dropdown 1 options */}
-                </select>
-              </label>
-
-              <label>
-                Dropdown 2:
-                <select name="dropdown2" value={formData.dropdown2} onChange={handleInputChange}>
-                  {/* Dropdown 2 options */}
-                </select>
-              </label>
-
-              <label>
-                Dropdown 3:
-                <select name="dropdown3" value={formData.dropdown3} onChange={handleInputChange}>
-                  {/* Dropdown 3 options */}
-                </select>
-              </label>
-
+            <span className="close-button" onClick={closeModal}>
+              &times;
+            </span>
+            <form onSubmit={handleSubmit}>
               <label>
                 Input 1:
-                <input type="text" name="input1" value={formData.input1} onChange={handleInputChange} />
+                <input type="text" name="input1" value={formData.input1} onChange={handleChange} />
               </label>
 
               <label>
                 Input 2:
-                <input type="text" name="input2" value={formData.input2} onChange={handleInputChange} />
+                <input type="text" name="input2" value={formData.input2} onChange={handleChange} />
               </label>
 
               <label>
                 Input 3:
-                <input type="text" name="input3" value={formData.input3} onChange={handleInputChange} />
+                <input type="text" name="input3" value={formData.input3} onChange={handleChange} />
               </label>
 
-              <button type="button" onClick={handleUpdateMeal}>Update</button>
+              <label>
+                Textarea 1:
+                <textarea name="textarea1" value={formData.textarea1} onChange={handleChange} />
+              </label>
+
+              <label>
+                Textarea 2:
+                <textarea name="textarea2" value={formData.textarea2} onChange={handleChange} />
+              </label>
+
+              <button type="submit">Submit</button>
             </form>
           </div>
-        </div>:
-        <button onClick={handleOpenModal}>Update Meal</button>
-      }
+        </div>
+      )}
     </div>
   );
 };

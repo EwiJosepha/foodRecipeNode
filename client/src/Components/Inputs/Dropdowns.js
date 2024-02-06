@@ -43,32 +43,32 @@ const MyForm = () => {
 
     ]
 
-  const ingredient=[
-      {
-        ingredient: "Onoin",
-      },
-      {
-        ingredient: "cucummer",
+  // const ingredient=[
+  //     {
+  //       ingredient: "Onoin",
+  //     },
+  //     {
+  //       ingredient: "cucummer",
 
-      },
-      {
-        ingredient: "curry",
+  //     },
+  //     {
+  //       ingredient: "curry",
 
-      },
-      {
-        ingredient: "leaks",
+  //     },
+  //     {
+  //       ingredient: "leaks",
 
-      },
-      {
-        ingredient: "sugar",
+  //     },
+  //     {
+  //       ingredient: "sugar",
 
-      },
-      {
-        ingredient: "cream",
+  //     },
+  //     {
+  //       ingredient: "cream",
 
-      },
+  //     },
 
-    ]
+  //   ]
   
 
 
@@ -84,9 +84,9 @@ const MyForm = () => {
         mealName: input1,
         mealArea: input2,
         mealUrl: input3,
-        instructiont: instruction.map(item => ({ instruction: item.instruction })),
+        instruction: instruction.map(item => ({ instruction: item.instruction })),
         step: step.map(item => ({ step: item.step })),
-        ingredient: ingredient.map(item => ({ ingredient: item.ingredient }))
+        // ingredient: ingredient.map(item => ({ ingredient: item.ingredient }))
       };
       const response = await axios.post("http://localhost:3000/mealrouters", mealData, {
         headers: {
@@ -193,12 +193,12 @@ const MyForm = () => {
       <div>
         <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
           Ingredients:
-          <select
+          {/* <select
             defaultValue={ingredientsformeal.map((item) => item.value)} onChange={(e) => setIngredientsformeal(Array.from(e.target.selectedOptions, (option) => option.value))} style={{ padding: '8px' }}
           >  {ingredient.map((ingr) => {
             return <option>{ingr.ingredient}</option>
           })}
-          </select>
+          </select> */}
         </label>
       </div>
 

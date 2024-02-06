@@ -65,8 +65,8 @@ router.post('/', function (req, res, next) {
   console.log("body", req.body);
 
   const categoryQuery = `INSERT INTO mealctegory (categoryId, category) VALUES (?, ?)`;
-  const mealQuery = `INSERT INTO meals ( mealName, mealArea, mealUrl, mealYoutube, categoryId) values (?, ?, ?, ?, ?,?)`;
-  const instructionsQuery = `INSERT INTO mealInstructions (instructionId,instruction,step)
+  const mealQuery = `INSERT INTO meals ( mealName, mealArea, mealUrl, mealYoutube) values (?, ?, ?, ?)`;
+  const instructionsQuery = `INSERT INTO mealInstructions (instruction,step)
   values (?, ?)
   `;
 
@@ -86,7 +86,7 @@ router.post('/', function (req, res, next) {
       // const mealIdFromCategoryInsert = results.insertId;
 
       // Insert into meals table
-      connection.query(mealQuery, [mealName, mealArea, mealUrl, mealYoutube, categoryId], function (error, results) {
+      connection.query(mealQuery, [mealName, mealArea, mealUrl, mealYoutube], function (error, results) {
         if (error) {
           return connection.rollback(function () {
             next(error);
@@ -95,7 +95,7 @@ router.post('/', function (req, res, next) {
         const mealIdFromMealsInsert = results.insertId;
 
         // Insert into mealInstructions table
-        connection.query(instructionsQuery, [instructionId,JSON.stringify(instruction), JSON.stringify(step)], function (error, results) {
+        connection.query(instructionsQuery, [JSON.stringify(instruction), JSON.stringify(step)], function (error, results) {
           console.log("instructions querry ", results);
           if (error) {
             return connection.rollback(function () {
