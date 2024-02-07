@@ -120,13 +120,16 @@ router.post('/', function (req, res, next) {
 
 
 router.post('/:id/update', function (req, res, next) {
-  const id = req.params.id
-  const updatedata = `UPDATE meals join mealctegory on
-   meals.categoryId = mealctegory.categoryId 
-   join mealinstructions on meals.mealId= mealinstructions.mealId SET meals.mealName="spaghetti", meals.mealArea="Italian", meals.mealUrl="https://example.com/spaghetti.jpg", meals.mealYoutube="https://www.youtube.com/watch?v=spaghetti-video", meals.categoryId= 1, mealctegory.category = "super", mealinstructions.instruction = '[{"instruction":"follow steps for spaghetti carefully"}]'  WHERE meals.mealId = ${id};`
 
-  console.log("querry executed", updatedata);
-  connection.query(updatedata, (err, data) => {
+  const id = req.params.id
+const {mealName, mealArea, mealUrl, mealId}= req.body
+  const updatedata = `UPDATE meals  SET mealName=?, mealArea=?, mealUrl=?, mealId=? WHERE mealId=?;`
+  const values = [mealName, mealArea, mealUrl, mealId, id];
+
+  console.log("Query executed:", updatedata);
+  console.log("Query values:", values);
+
+  connection.query(updatedata, values, (err, data) => {
     if (err) {
       console.log(err);
       if (err.message === "not found") next()
@@ -134,9 +137,14 @@ router.post('/:id/update', function (req, res, next) {
         next()
       }
     } else {
+
+
       res.send({ data })
     }
   })
+
+  console.log("querry executed", updatedata);
+
 })
 
 router.put("/", function (req, res, next) {
@@ -174,3 +182,8 @@ router.delete("/:id", function (req, res, next) {
 
 
 module.exports = router
+
+
+// `UPDATE meals join mealctegory on
+//    meals.categoryId = mealctegory.categoryId
+//    join mealinstructions on meals.mealId = mealinstructions.mealId SET meals.mealName = ?, meals.mealArea = ?, meals.mealUrl = ?, meals.mealYoutube = ?, meals.categoryId = ?, mealctegory.category = ?, mealinstructions.instruction = ?, mealinstructions.step = ? WHERE meals.mealId = ?;`

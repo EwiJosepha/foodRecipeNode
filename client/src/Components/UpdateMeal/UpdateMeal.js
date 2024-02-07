@@ -1,48 +1,98 @@
 
 import React, { useEffect, useState } from 'react';
-import Meals from '../Meals/Meals';
 
-const UpdateMealModal = () => {
+import axios from 'axios';
+
+const UpdateMealModal = ({ data }) => {
 
   const [formData, setFormData] = useState({
-    mealName: '',
-    mealArea: '',
-    mealUrl: '',
-    instruction: '',
-    step: '',
-    step: '',
+    mealName:'',
+    mealArea:'',
+    mealUrl:'',
+    mealId:'',
+    // instruction: '',
+    // step: '',
+    // step: '',
   });
 
+  const [deleteMeal, setDeleteMeal]= useState()
+
   useEffect(() => {
-    const updatedmeal = JSON.parse(localStorage.getItem("update"))
+    // const data = JSON.parse(localStorage.getItem("update"))
     // Set form data with values from the provided meal object
     setFormData({
-      mealName: updatedmeal.mealName || '',
-      mealArea: updatedmeal.mealArea || '',
-      mealUrl: updatedmeal.mealUrl || '',
-      instruction: JSON.stringify(updatedmeal.instruction) || '', // Add other fields as needed
-      step: updatedmeal.step || '',
-      step: updatedmeal.step || '',
+      mealName:data.mealName || '',
+      mealArea:data.mealArea || '',
+      mealUrl:data.mealUrl || '',
+      mealId:data.mealId || '',
+      // instruction:data.instruction.map(item => ({ instruction: item.instruction }))|| '', // Add other fields as needed
+      // step: data.step || '',
+      // step: data.step || '',
 
     });
-  }, []);
+  }, [data]);
 
-  console.log(formData.instruction);
+  console.log(data);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your update logic here
+
+
+    try {
+      const mealData = {
+        mealName:formData.mealName,
+        mealArea:formData.mealArea,
+        mealUrl:formData.mealUrl,
+        mealId:formData.mealId,
+      };
+
+
+      const updateValues = await axios.post(`http://localhost:3000/mealrouters/${mealData.mealId}/update`, mealData, {
+
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(mealData.mealId);
+
+      console.log('Meal updated successfully:', updateValues.data)
+      console.log(mealData);
+
+    } catch (error) {
+      // Handle error
+      console.error('Error updating meal:', error.message);
+    }
     console.log('Form submitted:', formData);
+    console.log('SQL Query:', data);
   };
+
+  async function deletefunction () {
+    const mealId = formData.mealId
+   setDeleteMeal(data = {})
+
+  
+   try{
+    const deleteVals = await axios.delete(`http://localhost:3000/mealrouters/${mealId}`)
+    console.log(data);
+    console.log(deleteVals);
+   
+  }catch (err) {
+      if(err) {
+        console.log("not deleted", err.message);
+      }
+   }
+  }
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: 'auto' }}>
-      <label htmlFor=" mealName"> mealName:</label>
+      <label htmlFor="mealName"> mealName:</label>
       <input
         type="text"
         id="mealName"
@@ -51,47 +101,56 @@ const UpdateMealModal = () => {
         onChange={handleChange}
         required
       />
-      <label htmlFor="  mealArea"> mealArea:</label>
+      <label htmlFor="mealArea"> mealArea:</label>
       <input
         type="text"
-        id="  mealArea"
+        id="mealArea"
         name="mealArea"
         value={formData.mealArea}
         onChange={handleChange}
         required
       />
-      <label htmlFor=" mealUrl"> mealUrl:</label>
+      <label htmlFor="mealUrl"> mealUrl:</label>
       <input
         type="text"
-        id=" mealUrl"
-        name=" mealName"
+        id="mealUrl"
+        name="mealUrl"
         value={formData.mealUrl}
         onChange={handleChange}
         required
       />
-
-
-      <label htmlFor=" instruction"> instruction:</label>
-      <textarea
-        id=" instruction"
-        name=" instruction"
-        value={JSON.stringify(formData.instruction, null, 2)}
+      <label htmlFor="mealId">mealId:</label>
+      <input
+        type="text"
+        id="mealId"
+        name="mealId"
+        value={formData.mealId}
         onChange={handleChange}
         required
-      ></textarea>
-
-      <label htmlFor="step">step:</label>
-      <textarea
-        id="step"
-        name="step"
-        value={formData.step}
-        onChange={handleChange}
-        required
-      ></textarea>
+      />
 
       <button type="submit">Update</button>
+      <button type="button" onClick={deletefunction}>Delete Meal</button>
     </form>
   );
 };
 
 export default UpdateMealModal;
+
+{/* <label htmlFor=" instruction"> instruction:</label>
+<textarea
+  id=" instruction"
+  name=" instruction"
+  value={formData.instruction}
+  onChange={handleChange}
+  required
+></textarea>
+
+<label htmlFor="step">step:</label>
+<textarea
+  id="step"
+  name="step"
+  value={formData.step}
+  onChange={handleChange}
+  required
+></textarea> */}

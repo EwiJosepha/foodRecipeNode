@@ -69,8 +69,7 @@ console.log(data);
         <br/>
         <br/>
         <br/>
-        <UpdateMealModal />
-
+        {data && <UpdateMealModal data={data} />}
         </div>
        
       </div>
