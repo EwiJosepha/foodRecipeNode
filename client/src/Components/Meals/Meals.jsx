@@ -52,7 +52,7 @@ function Meals() {
       <div className="latest" id="latestt">
         <h1 id="recipe">All Meals</h1>
         <div className="latestrecipe" id="latestrecipee">
-          {data.map((meals, mealId) => {
+          {data.slice(1, 5).map((meals, mealId) => {
             return (
               <>
                 <div
@@ -63,7 +63,7 @@ function Meals() {
                   className="bestmeal"
                   id="bestmeall"
                 >
-                  <img  key={meals.mealId} src={meals.mealUrl}  alt=""/>
+                  <img  key={mealId} src={meals.mealUrl}  alt="" />
 
                   <div className="area">
                     <h5 id="popcatt">{meals.mealName}</h5>

@@ -5,6 +5,8 @@ const MyForm = () => {
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [input3, setInput3] = useState('');
+  const [input4, setInput4] = useState('');
+  const [input5, setInput5] = useState('');
   const [instructionformeal, setInstructionformeal] = useState([])
   const [stepsformeal, setStepsformeal] = useState([])
   // const [ingredientsformeal, setIngredientsformeal] = useState([])
@@ -86,6 +88,8 @@ const MyForm = () => {
         mealName: input1,
         mealArea: input2,
         mealUrl: input3,
+        categoryId: input4,
+        mealId: input5,
         instruction: selectinstruction,
         step: selectstep,
         // ingredient: ingredient.map(item => ({ ingredient: item.ingredient }))
@@ -159,6 +163,24 @@ const MyForm = () => {
             style={{ width: '100%', padding: '8px' }}
           />
         </label>
+        <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
+          mealCatId:
+          <input
+            type="number"
+            value={input4}
+            onChange={(e) => setInput4(e.target.value)}
+            style={{ width: '100%', padding: '8px' }}
+          />
+        </label>
+        <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
+          mealId:
+          <input
+            type="number"
+            value={input5}
+            onChange={(e) => setInput5(e.target.value)}
+            style={{ width: '100%', padding: '8px' }}
+          />
+        </label>
       </div>
 
       <div >
@@ -206,7 +228,9 @@ const MyForm = () => {
           backgroundColor: '#4CAF50',
           color: 'white',
           padding: '15px',
-          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           border: 'none',
           borderRadius: '5px',
           cursor: 'pointer',

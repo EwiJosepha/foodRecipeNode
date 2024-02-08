@@ -91,7 +91,7 @@ const UpdateMealModal = ({ data }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: 'auto' }}>
+    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: 'auto',   }}>
       <label htmlFor="mealName"> mealName:</label>
       <input
         type="text"
@@ -128,9 +128,9 @@ const UpdateMealModal = ({ data }) => {
         onChange={handleChange}
         required
       />
-
-      <button type="submit">Update</button>
-      <button type="button" onClick={deletefunction}>Delete Meal</button>
+        
+      <button type="submit"  style={{background: "orange", border: "none" , padding: "8px", borderRadius: "3px", color: "white"}}>Update Meal</button>
+      <button type="button" onClick={deletefunction} style={{background: "red", border: "none" , padding: "10px", borderRadius: "3px", color: "white"}}>Delete Meal</button>
     </form>
   );
 };

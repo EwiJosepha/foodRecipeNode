@@ -9,8 +9,8 @@ let router = express.Router()
 router.get('/', function (req, res, next) {
   const query =
     `select  meals.mealId, mealName, mealArea,mealYoutube, mealUrl, mealctegory.category, mealinstructions.instruction, mealinstructions.step from meals  join mealctegory on
-  meals.categoryId = mealctegory.categoryId
-  join mealinstructions on meals.mealId= mealinstructions.mealId
+   meals.categoryId = mealctegory.categoryId
+   join mealinstructions on meals.mealId= mealinstructions.mealId 
   ;`
   console.log(res.statusCode)
   connection.query(query, (err, data) => {
@@ -56,7 +56,7 @@ router.post('/', function (req, res, next) {
     mealYoutube,
     categoryId,
     category,
-    instructionId,
+    mealId,
     stepCount,
     instruction,
     step
@@ -65,9 +65,9 @@ router.post('/', function (req, res, next) {
   console.log("body", req.body);
 
   const categoryQuery = `INSERT INTO mealctegory (categoryId, category) VALUES (?, ?)`;
-  const mealQuery = `INSERT INTO meals ( mealName, mealArea, mealUrl, mealYoutube) values (?, ?, ?, ?)`;
-  const instructionsQuery = `INSERT INTO mealInstructions (instruction,step)
-  values (?, ?)
+  const mealQuery = `INSERT INTO meals ( mealName, mealArea, mealUrl, mealYoutube, categoryId) values (?, ?, ?, ?, ?)`;
+  const instructionsQuery = `INSERT INTO mealInstructions (instruction,step,mealId)
+  values (?, ?, ?)
   `;
 
   connection.beginTransaction(function (err) {
@@ -86,7 +86,7 @@ router.post('/', function (req, res, next) {
       // const mealIdFromCategoryInsert = results.insertId;
 
       // Insert into meals table
-      connection.query(mealQuery, [mealName, mealArea, mealUrl, mealYoutube], function (error, results) {
+      connection.query(mealQuery, [mealName, mealArea, mealUrl, mealYoutube,categoryId], function (error, results) {
         if (error) {
           return connection.rollback(function () {
             next(error);
@@ -95,7 +95,7 @@ router.post('/', function (req, res, next) {
         const mealIdFromMealsInsert = results.insertId;
 
         // Insert into mealInstructions table
-        connection.query(instructionsQuery, [JSON.stringify(instruction), JSON.stringify(step)], function (error, results) {
+        connection.query(instructionsQuery, [JSON.stringify(instruction), JSON.stringify(step),mealId], function (error, results) {
           console.log("instructions querry ", results);
           if (error) {
             return connection.rollback(function () {
@@ -122,7 +122,7 @@ router.post('/', function (req, res, next) {
 router.post('/:id/update', function (req, res, next) {
 
   const id = req.params.id
-const {mealName, mealArea, mealUrl, mealId}= req.body
+  const { mealName, mealArea, mealUrl, mealId } = req.body
   const updatedata = `UPDATE meals  SET mealName=?, mealArea=?, mealUrl=?, mealId=? WHERE mealId=?;`
   const values = [mealName, mealArea, mealUrl, mealId, id];
 
@@ -187,3 +187,7 @@ module.exports = router
 // `UPDATE meals join mealctegory on
 //    meals.categoryId = mealctegory.categoryId
 //    join mealinstructions on meals.mealId = mealinstructions.mealId SET meals.mealName = ?, meals.mealArea = ?, meals.mealUrl = ?, meals.mealYoutube = ?, meals.categoryId = ?, mealctegory.category = ?, mealinstructions.instruction = ?, mealinstructions.step = ? WHERE meals.mealId = ?;`
+
+// select  meals.mealId, mealName, mealArea,mealYoutube, mealUrl, mealctegory.category, mealinstructions.instruction, mealinstructions.step, mealingredients.ingredients from meals  join mealctegory on
+//    meals.categoryId = mealctegory.categoryId
+//    join mealinstructions on meals.mealId= mealinstructions.mealId join mealingredient on meals.mealId = mealingredient.mealId join mealingredients on  mealingredients.ingredients = mealingredient.ingredientId where meals.mealId = 1

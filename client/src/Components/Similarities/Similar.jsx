@@ -28,7 +28,7 @@ function Similar () {
  console.log(data);
   return (
     <>  <div className="embodysimilar">
-    <h2 id="simimeals">Similar Meals</h2>
+     <br/><h2 id="simimeals">Update or Delete Meals Here</h2> <br/>
          {data?.mealCategory.meals.slice(0,4).map((item)=>{ 
     
     return <div className="divcard">
