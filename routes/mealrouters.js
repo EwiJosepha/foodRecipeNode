@@ -8,9 +8,29 @@ let router = express.Router()
 
 router.get('/', function (req, res, next) {
   const query =
-    `select  meals.mealId, mealName, mealArea,mealYoutube, mealUrl, mealctegory.category, mealinstructions.instruction, mealinstructions.step from meals  join mealctegory on
-   meals.categoryId = mealctegory.categoryId
-   join mealinstructions on meals.mealId= mealinstructions.mealId 
+    `
+    SELECT
+        meals.mealId,
+        mealName,
+        mealArea,
+        mealYoutube,
+        mealUrl,
+        mealctegory.category,
+        mealinstructions.instruction,
+        mealinstructions.step,
+        GROUP_CONCAT(mealingredients.ingredients) AS ingredients
+    FROM
+        meals
+    JOIN
+        mealctegory ON meals.categoryId = mealctegory.categoryId
+    JOIN
+        mealinstructions ON meals.mealId = mealinstructions.mealId
+    LEFT JOIN
+        mealingredient ON meals.mealId = mealingredient.mealId
+    LEFT JOIN
+        mealingredients ON mealingredient.ingredientId = mealingredients.ingredientId
+    GROUP BY
+        meals.mealId, mealName, mealArea, mealYoutube, mealUrl, mealctegory.category, mealinstructions.instruction, mealinstructions.step
   ;`
   console.log(res.statusCode)
   connection.query(query, (err, data) => {
@@ -19,7 +39,9 @@ router.get('/', function (req, res, next) {
       if (err.message === "not found") next()
       else next()
     } else {
+      res.setHeader('Content-Type', 'application/json')
       res.send(data)
+      console.log(data);
 
     }
   })

@@ -13,6 +13,8 @@ const MyForm = () => {
   const [selectstep, setSelectstep] = useState([])
   const [selectinstruction, setSelectinstruction] = useState([])
   // npm install react-scripts@latest
+  // npm install react-scripts@latest
+  // npm install react-scripts@latest
 
   const step = [
 
@@ -129,7 +131,7 @@ const MyForm = () => {
       style={{
         display: 'flex',
         maxWidth: '300px', 
-        height: '400px'
+        height: '590px'
       }}
     >
       <div >
@@ -145,7 +147,7 @@ const MyForm = () => {
       </div>
 
       <div >
-        <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
+        <label style={{ marginBottom: '2px', fontSize: '18px', fontWeight: 400 }}>
           mealArea:
           <input
             type="text"
@@ -154,7 +156,7 @@ const MyForm = () => {
             style={{ width: '100%', padding: '8px' }}
           />
         </label>
-        <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
+        <label style={{ marginBottom: '2px', fontSize: '18px', fontWeight: 400 }}>
           mealUrl:
           <input
             type="text"
@@ -163,8 +165,8 @@ const MyForm = () => {
             style={{ width: '100%', padding: '8px' }}
           />
         </label>
-        <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
-          mealCatId:
+        <label style={{ marginBottom: '2px', fontSize: '18px', fontWeight: 400 }}>
+          categoryId:
           <input
             type="number"
             value={input4}
@@ -172,7 +174,7 @@ const MyForm = () => {
             style={{ width: '100%', padding: '8px' }}
           />
         </label>
-        <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
+        <label style={{ marginBottom: '2px', fontSize: 'px', fontWeight: 400 }}>
           mealId:
           <input
             type="number"
@@ -186,7 +188,7 @@ const MyForm = () => {
       <div >
         <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
           Instructions:
-          <select value={selectinstruction} onChange={handleinstructionformealChange} style={{ padding: '8px' }}
+          <select  onChange={handleinstructionformealChange} style={{ padding: '8px' }}
           >
             {instruction.map((instr, index) => {
               return <option key={index} value={instr.instruction}>{instr.instruction}</option>
@@ -198,7 +200,7 @@ const MyForm = () => {
       <div>
         <label style={{ marginBottom: '5px', fontSize: '20px', fontWeight: 400 }}>
           Steps :
-          <select value={selectstep}
+          <select
             onChange={handlestepsformealChange}
            style={{ padding: '8px' }}
 

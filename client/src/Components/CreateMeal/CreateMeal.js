@@ -20,8 +20,8 @@ function CreateMeal() {
     <>
 
       <br />
-      <h3 id="txtcenter" style={{ fontWeight: "700" }}>Would you like to make your own meal? (s)</h3>
-
+      <h3 id="txtcenter" style={{ fontWeight: "600" }}>Would you like to make your own meal? (s)</h3><br />
+<span>Fill the form correctly  before you click on submit to create meal</span><br/>
 
       <div className="alreadymade">
         {makeMeal ?
@@ -33,7 +33,7 @@ function CreateMeal() {
             />
             <MyForm />
             < br />
-            < br />
+           
        
             <button type="button" id="btn" onClick={closeModal}>close Modal</button><br />
           </div>}

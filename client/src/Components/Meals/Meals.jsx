@@ -52,7 +52,7 @@ function Meals() {
       <div className="latest" id="latestt">
         <h1 id="recipe">All Meals</h1>
         <div className="latestrecipe" id="latestrecipee">
-          {data.slice(1, 5).map((meals, mealId) => {
+          {data.map((meals, mealId) => {
             return (
               <>
                 <div

@@ -6,26 +6,26 @@ import axios from 'axios';
 const UpdateMealModal = ({ data }) => {
 
   const [formData, setFormData] = useState({
-    mealName:'',
-    mealArea:'',
-    mealUrl:'',
-    mealId:'',
+    mealName: '',
+    mealArea: '',
+    mealUrl: '',
+    mealId: '',
     // instruction: '',
     // step: '',
     // step: '',
   });
 
-  const [deleteMeal, setDeleteMeal]= useState()
+  const [deleteMeal, setDeleteMeal] = useState()
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("update"))
     // Set form data with values from the provided meal object
     setFormData({
-      mealName:data.mealName || '',
-      mealArea:data.mealArea || '',
-      mealUrl:data.mealUrl || '',
-      mealId:data.mealId || '',
-      // instruction:data.instruction.map(item => ({ instruction: item.instruction }))|| '', // Add other fields as needed
+      mealName: data.mealName || '',
+      mealArea: data.mealArea || '',
+      mealUrl: data.mealUrl || '',
+      mealId: data.mealId || '',
+      instruction:data.instruction.map(item => ({ instruction: item.instruction }))|| '', 
       // step: data.step || '',
       // step: data.step || '',
 
@@ -46,10 +46,10 @@ const UpdateMealModal = ({ data }) => {
 
     try {
       const mealData = {
-        mealName:formData.mealName,
-        mealArea:formData.mealArea,
-        mealUrl:formData.mealUrl,
-        mealId:formData.mealId,
+        mealName: formData.mealName,
+        mealArea: formData.mealArea,
+        mealUrl: formData.mealUrl,
+        mealId: formData.mealId,
       };
 
 
@@ -73,25 +73,25 @@ const UpdateMealModal = ({ data }) => {
     console.log('SQL Query:', data);
   };
 
-  async function deletefunction () {
+  async function deletefunction() {
     const mealId = formData.mealId
-   setDeleteMeal(data = {})
+    setDeleteMeal(data = {})
 
-  
-   try{
-    const deleteVals = await axios.delete(`http://localhost:3000/mealrouters/${mealId}`)
-    console.log(data);
-    console.log(deleteVals);
-   
-  }catch (err) {
-      if(err) {
+
+    try {
+      const deleteVals = await axios.delete(`http://localhost:3000/mealrouters/${mealId}`)
+      console.log(data);
+      console.log(deleteVals);
+
+    } catch (err) {
+      if (err) {
         console.log("not deleted", err.message);
       }
-   }
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: 'auto',   }}>
+    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: 'auto', }}>
       <label htmlFor="mealName"> mealName:</label>
       <input
         type="text"
@@ -101,7 +101,7 @@ const UpdateMealModal = ({ data }) => {
         onChange={handleChange}
         required
       />
-      <label htmlFor="mealArea"> mealArea:</label>
+      <label htmlFor="mealArea">mealArea:</label>
       <input
         type="text"
         id="mealArea"
@@ -110,7 +110,7 @@ const UpdateMealModal = ({ data }) => {
         onChange={handleChange}
         required
       />
-      <label htmlFor="mealUrl"> mealUrl:</label>
+      <label htmlFor="mealUrl">mealUrl:</label>
       <input
         type="text"
         id="mealUrl"
@@ -128,23 +128,24 @@ const UpdateMealModal = ({ data }) => {
         onChange={handleChange}
         required
       />
-        
-      <button type="submit"  style={{background: "orange", border: "none" , padding: "8px", borderRadius: "3px", color: "white"}}>Update Meal</button>
-      <button type="button" onClick={deletefunction} style={{background: "red", border: "none" , padding: "10px", borderRadius: "3px", color: "white"}}>Delete Meal</button>
+      <label htmlFor=" instruction"> instruction:</label>
+      <textarea
+        id=" instruction"
+        name=" instruction"
+        value={formData.instruction}
+        onChange={handleChange}
+        required
+      ></textarea>
+
+      <button type="submit" style={{ background: "orange", border: "none", padding: "8px", borderRadius: "3px", color: "white" }}>Update Meal</button>
+      <button type="button" onClick={deletefunction} style={{ background: "red", border: "none", padding: "10px", borderRadius: "3px", color: "white" }}>Delete Meal</button>
     </form>
   );
 };
 
 export default UpdateMealModal;
 
-{/* <label htmlFor=" instruction"> instruction:</label>
-<textarea
-  id=" instruction"
-  name=" instruction"
-  value={formData.instruction}
-  onChange={handleChange}
-  required
-></textarea>
+{/* 
 
 <label htmlFor="step">step:</label>
 <textarea

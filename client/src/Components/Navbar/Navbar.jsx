@@ -1,3 +1,4 @@
+
 function Navbar () {
   return (
     <>
@@ -23,7 +24,7 @@ function Navbar () {
     </div>
 
     <div className="tastebite">
-      <img src="src/assets/images/Logo 2.png" />
+      {/* <img src={tastebite}  alt=""/> */}
     </div>
 
     <div className="menu">

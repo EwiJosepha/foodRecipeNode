@@ -29,6 +29,7 @@ function Similar () {
   return (
     <>  <div className="embodysimilar">
      <br/><h2 id="simimeals">Update or Delete Meals Here</h2> <br/>
+     <span> change any field in the form  before clicking the update button</span><br/>
          {data?.mealCategory.meals.slice(0,4).map((item)=>{ 
     
     return <div className="divcard">

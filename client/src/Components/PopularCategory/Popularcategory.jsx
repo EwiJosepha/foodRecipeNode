@@ -7,9 +7,8 @@ function Popularcat() {
     queryFn: async () => {
       const res = await axios.get(
         "https://www.themealdb.com/api/json/v1/1/categories.php"
-
       );
-      return res.data
+      return res.data;
     },
   });
   console.log(data);
@@ -23,21 +22,18 @@ function Popularcat() {
 
   return (
     <>
-     
-        <div className="popularcategory" id="popularcategoryy">
-          <h1 id="popcat">Popular Category</h1>
-          <div className="categoryimages" id="categoryimagess">
+      <div className="popularcategory" id="popularcategoryy">
+        <h1 id="popcat">Popular Category</h1>
+        <div className="categoryimages" id="categoryimagess">
           {data?.categories.slice(0, 12).map((meal) => (
             <div key={meal.idMeal} className="imagetitle">
               <img src={meal.strCategoryThumb} alt="popular Meals" />
 
-              <h5 id="popcatt">{meal.strCategory
-}</h5>
+              <h5 id="popcatt">{meal.strCategory}</h5>
             </div>
-              ))}
-          </div>
+          ))}
         </div>
-    
+      </div>
     </>
   );
 }

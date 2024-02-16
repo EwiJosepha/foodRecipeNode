@@ -1,3 +1,4 @@
+// import tastebite from "../"
 function Footer () {
   return(
     <>

@@ -89,6 +89,8 @@
   margin-bottom: 20px;
   padding: 17px;
   border-radius: 8px;
-  background-color: #ffa500;
-  text-align: center;
+  background-color: #4CAF50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
